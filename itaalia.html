@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Itaalia keele alused – A1.1 ettevalmistus</title>
+<style>
+  :root {
+    --green: #2a9d4e;
+    --green-light: #e8f8ee;
+    --red: #e03c4a;
+    --red-light: #fff0f1;
+    --cream: #fffbf4;
+    --warm: #fff7e6;
+    --dark: #2d2d2d;
+    --mid: #5a5a5a;
+    --light: #f5f0e8;
+    --border: #e0d6c4;
+    --accent: #c05c00;
+    --accent-light: #fff3e8;
+    --blue: #1a6fa8;
+    --blue-light: #e8f3fb;
+    --yellow: #f5a623;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--cream); color: var(--dark); line-height: 1.65; }
+
+  /* NAV – desktop top bar */
+  nav {
+    background: white;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border-bottom: 3px solid transparent;
+    border-image: linear-gradient(90deg, #009246 33%, white 33%, white 66%, #ce2b37 66%) 1;
+  }
+  .nav-header { display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 1.2rem 0.5rem; }
+  .nav-title { font-size: 1.05rem; font-weight: 800; color: var(--accent); letter-spacing: -0.3px; }
+  .nav-title span { color: var(--green); }
+  .nav-timer { font-size: 0.8rem; color: var(--mid); background: var(--light); padding: 0.25rem 0.7rem; border-radius: 20px; }
+  .nav-links { display: flex; flex-wrap: nowrap; gap: 0; overflow-x: auto; scrollbar-width: none; padding: 0 0.5rem 0.5rem; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a {
+    color: var(--mid);
+    text-decoration: none;
+    padding: 0.38rem 0.9rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: 20px;
+    white-space: nowrap;
+    transition: background 0.18s, color 0.18s;
+    flex-shrink: 0;
+  }
+  .nav-links a:hover { background: var(--light); color: var(--accent); }
+  .nav-links a.active { background: var(--accent); color: white; }
+
+  /* PROGRESS */
+  .progress-bar-wrap { background: #eee; height: 3px; }
+  .progress-bar { background: linear-gradient(90deg, var(--green), var(--yellow)); height: 3px; transition: width 0.5s; }
+
+  /* MOBILE BOTTOM NAV */
+  .bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    box-shadow: 0 -2px 16px rgba(0,0,0,0.1);
+    z-index: 200;
+    border-top: 1px solid var(--border);
+    padding: 0 0.2rem env(safe-area-inset-bottom, 0);
+  }
+  .bottom-nav-inner { display: flex; justify-content: space-around; }
+  .bottom-nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0.2rem 0.45rem;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+    color: #999;
+    font-size: 0.6rem;
+    font-weight: 600;
+    line-height: 1.3;
+    transition: color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .bottom-nav-btn .bnav-icon { font-size: 1.35rem; line-height: 1; margin-bottom: 0.1rem; }
+  .bottom-nav-btn.active { color: var(--accent); }
+  .bottom-nav-btn.active .bnav-icon { transform: scale(1.1); }
+
+  /* SECTIONS */
+  main { max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem 5rem; }
+  .section { display: none; }
+  .section.active { display: block; }
+  h1 { font-size: 1.7rem; font-weight: 800; color: var(--accent); margin-bottom: 0.25rem; }
+  h2 { font-size: 1.2rem; font-weight: 700; color: var(--green); margin: 1.8rem 0 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+  h2::before { content: ''; display: inline-block; width: 4px; height: 1.1em; background: var(--green); border-radius: 4px; flex-shrink: 0; }
+  h3 { font-size: 1rem; font-weight: 700; color: var(--accent); margin: 1.2rem 0 0.5rem; }
+  p { margin-bottom: 0.8rem; color: var(--mid); }
+  .intro-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 1rem 1.2rem; border-radius: 0 var(--radius) var(--radius) 0; margin-bottom: 1.5rem; }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin: 0.8rem 0 1.2rem; border-radius: var(--radius); box-shadow: var(--shadow); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.88rem; background: white; min-width: 340px; }
+  th { background: var(--green); color: white; padding: 0.55rem 0.9rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #faf8f3; }
+  .it { font-weight: 700; color: var(--accent); font-style: italic; }
+  .et { color: var(--blue); }
+
+  /* VOCAB CARDS */
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.6rem; margin: 0.8rem 0 1.2rem; }
+  .vocab-card { background: white; border: 2px solid var(--border); border-radius: var(--radius); padding: 0.7rem 0.9rem; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s; user-select: none; -webkit-tap-highlight-color: transparent; }
+  .vocab-card:active { transform: scale(0.97); }
+  .vocab-card:hover { transform: translateY(-3px); border-color: var(--green); box-shadow: 0 6px 18px rgba(42,157,78,0.15); }
+  .vocab-card .it-word { font-weight: 700; color: var(--accent); font-size: 0.98rem; }
+  .vocab-card .et-word { color: var(--blue); font-size: 0.82rem; margin-top: 0.25rem; font-weight: 600; }
+  .vocab-card .et-word.hidden { filter: blur(5px); transition: filter 0.2s; }
+  .vocab-card:hover .et-word.hidden { filter: none; }
+
+  /* PARADIGM BOXES */
+  .paradigm-box { background: white; border-radius: var(--radius); padding: 1.3rem; box-shadow: var(--shadow); margin-bottom: 1.2rem; border: 1px solid var(--border); }
+  .paradigm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; font-size: 0.9rem; }
+  .paradigm-row { display: contents; }
+  .p-pronoun { color: var(--mid); font-size: 0.82rem; }
+  .p-form { font-weight: 700; color: var(--accent); }
+  .p-et { color: var(--blue); font-size: 0.82rem; }
+
+  .conj-table { display: grid; grid-template-columns: auto 1fr 1fr; gap: 0.35rem 1rem; align-items: baseline; padding: 0.4rem 0; font-size: 0.92rem; }
+  .conj-table .pron { color: #aaa; font-size: 0.8rem; font-style: italic; }
+  .conj-table .form { font-weight: 700; color: var(--accent); font-size: 1rem; }
+  .conj-table .transl { color: var(--blue); font-size: 0.82rem; }
+
+  .verb-tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .verb-tab { padding: 0.4rem 0.9rem; border: 2px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 0.82rem; font-weight: 600; background: white; transition: all 0.18s; -webkit-tap-highlight-color: transparent; }
+  .verb-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .verb-tab:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+
+  .tense-toggle { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+  .tense-btn { padding: 0.5rem 1.3rem; cursor: pointer; font-size: 0.88rem; font-weight: 700; background: white; border: 2px solid var(--border); border-radius: 20px; transition: all 0.18s; font-family: inherit; }
+  .tense-btn.active { background: var(--green); color: white; border-color: var(--green); }
+  .tense-btn:hover:not(.active) { border-color: var(--green); color: var(--green); }
+
+  /* GRAMMAR NOTES */
+  .note-box { background: var(--warm); border: 1px solid #f0d080; border-left: 4px solid var(--yellow); border-radius: 0 var(--radius) var(--radius) 0; padding: 0.8rem 1rem; margin: 0.8rem 0; font-size: 0.88rem; }
+  .note-box strong { color: var(--accent); }
+  .example { color: var(--accent); font-style: italic; }
+  .example .et { color: var(--blue); font-style: normal; }
+
+  /* EXERCISES */
+  .exercise { background: white; border-radius: var(--radius); padding: 1.3rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; border: 1px solid var(--border); }
+  .exercise h3 { margin-top: 0; color: var(--dark); font-size: 1.05rem; }
+  .exercise-item { margin: 0.85rem 0; display: flex; align-items: flex-start; gap: 0.6rem; flex-wrap: wrap; }
+  .exercise-item label { color: var(--mid); font-size: 0.88rem; flex: 1 1 200px; padding-top: 0.35rem; }
+  .exercise-item input[type=text] { border: 2px solid var(--border); border-radius: 10px; padding: 0.45rem 0.75rem; font-size: 0.95rem; width: 150px; font-family: inherit; transition: border-color 0.2s; -webkit-appearance: none; }
+  .exercise-item input[type=text]:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(42,157,78,0.12); }
+  .exercise-item input.correct { border-color: var(--green); background: var(--green-light); }
+  .exercise-item input.wrong { border-color: var(--red); background: var(--red-light); }
+  .feedback { font-size: 0.82rem; font-weight: 600; }
+  .feedback.ok { color: var(--green); }
+  .feedback.err { color: var(--red); }
+
+  .btn { padding: 0.55rem 1.5rem; border: none; border-radius: 22px; cursor: pointer; font-size: 0.9rem; font-family: inherit; font-weight: 700; transition: all 0.18s; -webkit-tap-highlight-color: transparent; }
+  .btn-green { background: var(--green); color: white; box-shadow: 0 3px 10px rgba(42,157,78,0.3); }
+  .btn-green:hover { background: #228b41; transform: translateY(-1px); }
+  .btn-green:active { transform: translateY(0); }
+  .btn-red { background: var(--red); color: white; box-shadow: 0 3px 10px rgba(224,60,74,0.3); }
+  .btn-red:hover { background: #c0303d; }
+  .btn-outline { background: white; color: var(--green); border: 2px solid var(--green); }
+  .btn-outline:hover { background: var(--green-light); }
+
+  .score-box { margin-top: 1rem; padding: 0.9rem 1.1rem; border-radius: var(--radius); font-weight: 700; display: none; }
+  .score-box.show { display: block; }
+  .score-good { background: var(--green-light); color: var(--green); border: 1px solid #a8dbb8; }
+  .score-bad { background: var(--red-light); color: var(--red); border: 1px solid #f5b8bc; }
+
+  /* FLASHCARD */
+  .flashcard-wrap { perspective: 900px; width: min(340px, 90vw); height: 200px; margin: 1.2rem auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.45s cubic-bezier(.4,0,.2,1); border-radius: 20px; }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 20px; box-shadow: 0 6px 24px rgba(0,0,0,0.12); padding: 1.5rem; text-align: center; }
+  .card-front { background: linear-gradient(135deg, var(--green) 0%, #1d7a3a 100%); color: white; }
+  .card-back { background: white; color: var(--accent); transform: rotateY(180deg); border: 2px solid var(--border); }
+  .card-word { font-size: 1.7rem; font-weight: 800; }
+  .card-hint { font-size: 0.78rem; margin-top: 0.5rem; opacity: 0.7; }
+  .card-transl { font-size: 1.4rem; font-weight: 700; }
+  .card-extra { font-size: 0.82rem; color: var(--mid); margin-top: 0.4rem; }
+  .flashcard-controls { display: flex; gap: 1.2rem; justify-content: center; margin-top: 1.2rem; align-items: center; flex-wrap: wrap; }
+  .card-counter { color: var(--mid); font-size: 0.85rem; font-weight: 600; }
+
+  /* MULTI CHOICE */
+  .mc-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.8rem 0; }
+  .mc-btn { padding: 0.7rem 1rem; border: 2px solid var(--border); border-radius: var(--radius); background: white; cursor: pointer; font-size: 0.9rem; font-family: inherit; transition: all 0.18s; text-align: left; font-weight: 500; -webkit-tap-highlight-color: transparent; }
+  .mc-btn:hover:not(:disabled) { border-color: var(--green); background: var(--green-light); }
+  .mc-btn.mc-correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 700; }
+  .mc-btn.mc-wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
+  .mc-question { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin: 0.5rem 0 0.8rem; }
+
+  /* TIMER */
+  .timer-section {
+    background: linear-gradient(135deg, #1d3a2a 0%, #2a5a3a 100%);
+    color: white;
+    border-radius: var(--radius);
+    padding: 1.1rem 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .timer-display { font-size: 2rem; font-weight: 800; color: #f5c842; font-variant-numeric: tabular-nums; min-width: 76px; }
+  .timer-label { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 0.1rem; }
+  .timer-progress { flex: 1; min-width: 140px; }
+  .timer-prog-bar { background: rgba(255,255,255,0.15); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 0.3rem; }
+  .timer-prog-fill { background: linear-gradient(90deg, #4cd97b, #f5c842); height: 100%; transition: width 1s linear; }
+
+  /* SECTION NAV */
+  .section-nav { display: flex; justify-content: space-between; margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); gap: 0.5rem; }
+
+  /* ACCORDION */
+  .accordion { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 0.8rem; }
+  .accordion-header { background: var(--light); padding: 0.8rem 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--accent); font-size: 0.92rem; -webkit-tap-highlight-color: transparent; }
+  .accordion-header:hover { background: #ece6db; }
+  .accordion-body { display: none; padding: 1rem; background: white; overflow-x: auto; }
+  .accordion-body.open { display: block; }
+  .accordion-arrow { transition: transform 0.22s; font-style: normal; }
+  .accordion-header.open .accordion-arrow { transform: rotate(90deg); }
+
+  /* BADGE */
+  .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-left: 0.4rem; }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-red { background: var(--red-light); color: var(--red); }
+
+  @media (max-width: 680px) {
+    nav .nav-links { display: none; }
+    .bottom-nav { display: block; }
+    main { padding: 1rem 0.8rem 5.5rem; }
+    .timer-section { flex-wrap: wrap; gap: 0.8rem; }
+    .mc-options { grid-template-columns: 1fr; }
+    .vocab-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+    .exercise-item input[type=text] { width: 100%; }
+    .exercise-item { flex-direction: column; align-items: stretch; gap: 0.4rem; }
+    .exercise-item label { padding-top: 0; }
+    h1 { font-size: 1.45rem; }
+    .tense-toggle { flex-wrap: wrap; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .paradigm-box, .exercise { padding: 1rem; }
+    .section-nav { flex-direction: column; gap: 0.6rem; }
+    .section-nav .btn { width: 100%; text-align: center; }
+  }
+  @media (max-width: 400px) {
+    .vocab-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-header">
+    <div class="nav-title"><span>it</span>aalia keel</div>
+    <div class="nav-timer">
+      <strong id="navTime">0:00</strong> / 20h
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#" onclick="showSection('s-avaleht',this)" class="active">Kodu</a>
+    <a href="#" onclick="showSection('s-haaldumine',this)">Haaldumine</a>
+    <a href="#" onclick="showSection('s-grammatika',this)">Grammatika</a>
+    <a href="#" onclick="showSection('s-tegusoned',this)">Tegusoned</a>
+    <a href="#" onclick="showSection('s-soned',this)">Sonad</a>
+    <a href="#" onclick="showSection('s-harjutused',this)">Harjutused</a>
+    <a href="#" onclick="showSection('s-kaardid',this)">Kaardimang</a>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+</nav>
+
+<div class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bottom-nav-btn active" id="bnav-s-avaleht" onclick="showSection('s-avaleht',null,this)">
+      <span class="bnav-icon">&#127968;</span>KODU
+    </button>
+    <button class="bottom-nav-btn" id="bnav-s-haaldumine" onclick="showSection('s-haaldumine',null,this)">
+      <span class="bnav-icon">&#128442;</span>HÄÄLDUS
+    </button>
+    <button class="bottom-nav-btn" id="bnav-s-grammatika" onclick="showSection('s-grammatika',null,this)">
+      <span class="bnav-icon">&#128218;</span>GRAMMATIKA
+    </button>
+    <button class="bottom-nav-btn" id="bnav-s-tegusoned" onclick="showSection('s-tegusoned',null,this)">
+      <span class="bnav-icon">&#9995;</span>VERB
+    </button>
+    <button class="bottom-nav-btn" id="bnav-s-soned" onclick="showSection('s-soned',null,this)">
+      <span class="bnav-icon">&#128172;</span>SÕNAD
+    </button>
+    <button class="bottom-nav-btn" id="bnav-s-harjutused" onclick="showSection('s-harjutused',null,this)">
+      <span class="bnav-icon">&#9999;</span>HARJ
+    </button>
+    <button class="bottom-nav-btn" id="bnav-s-kaardid" onclick="showSection('s-kaardid',null,this)">
+      <span class="bnav-icon">&#127183;</span>MÄNG
+    </button>
+  </div>
+</div>
+
+<main>
+
+<!-- ===== AVALEHT ===== -->
+<div id="s-avaleht" class="section active">
+  <h1>Itaalia keele alused</h1>
+  <p style="color:var(--mid);margin-bottom:1.5rem">A1.1 kursuse ettevalmistus – eesmärk 20 tundi</p>
+
+  <div class="timer-section">
+    <div>
+      <div class="timer-label">Täna õpitud</div>
+      <div class="timer-display" id="timerDisplay">0:00</div>
+    </div>
+    <div class="timer-progress">
+      <div style="font-size:0.82rem;color:rgba(255,255,255,0.75);font-weight:600;">Kogu progress: <span id="totalHoursDisplay">0.0</span> / 20 tundi &nbsp;<span id="progressPct" style="color:#f5c842">0%</span></div>
+      <div class="timer-prog-bar"><div class="timer-prog-fill" id="timerProgFill" style="width:0%"></div></div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:0.3rem">Seanssi kokku: <span id="navSessions">0</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.5rem">
+      <button class="btn btn-green" id="timerBtn" onclick="toggleTimer()">Alusta</button>
+      <button class="btn" style="background:rgba(255,255,255,0.12);color:white;font-size:0.8rem;padding:0.4rem 1rem;" onclick="resetTimer()">Tühista</button>
+    </div>
+  </div>
+
+  <div class="intro-box">
+    <strong>Mis sind ees ootab?</strong><br>
+    See leht sisaldab kõike, mida vajad A1.1 kursuseks: häälduse alused, grammatika, 500+ sõna ning interaktiivseid harjutusi. Taimer aitab 20 tunni eesmärki jälgida.
+  </div>
+
+  <h2>Kava</h2>
+  <table>
+    <tr><th>Teema</th><th>Sisu</th><th>Soovituslik aeg</th></tr>
+    <tr><td>Haaldumine</td><td>Tähestik, vokaalid, kaashäälikud, rõhk</td><td>2h</td></tr>
+    <tr><td>Grammatika</td><td>Artiklid, nimisõnad, omadussõnad, asesõnad</td><td>4h</td></tr>
+    <tr><td>Tegusoned</td><td>essere, avere, -are/-ere/-ire, passato prossimo</td><td>5h</td></tr>
+    <tr><td>Soned</td><td>Arvud, tervitused, perekond, värvid, toit, aeg...</td><td>5h</td></tr>
+    <tr><td>Harjutused</td><td>Lünktekstid, valikvastused, tõlkimine</td><td>4h</td></tr>
+  </table>
+
+  <h2>Kiirjuhend</h2>
+  <p>Kliki ülal navigatsiooniribal jaotisele, mida soovid uurida. Kaardimäng aitab sõnavara meelde jätta. Taimer salvestab sinu õpitud tunnid automaatselt.</p>
+</div>
+
+<!-- ===== HAALDUMINE ===== -->
+<div id="s-haaldumine" class="section">
+  <h1>Hääldus</h1>
+
+  <h2>Itaalia tähestik</h2>
+  <p>Itaalia tähestikus on 21 tähte (+ 5 võõrsõnadest: J, K, W, X, Y).</p>
+  <table>
+    <tr><th>Täht</th><th>Nimi itaalia k.</th><th>Hääldus eesti keele kõrval</th></tr>
+    <tr><td class="it">A a</td><td>a</td><td>[a] nagu eesti "a"</td></tr>
+    <tr><td class="it">B b</td><td>bi</td><td>[b] nagu "b"</td></tr>
+    <tr><td class="it">C c</td><td>ci</td><td>[k] enne a,o,u; [tʃ] (nagu "tš") enne e,i</td></tr>
+    <tr><td class="it">D d</td><td>di</td><td>[d]</td></tr>
+    <tr><td class="it">E e</td><td>e</td><td>[e] – avatud [ɛ] või suletud [e]</td></tr>
+    <tr><td class="it">F f</td><td>effe</td><td>[f]</td></tr>
+    <tr><td class="it">G g</td><td>gi</td><td>[g] enne a,o,u; [dʒ] (nagu "dž") enne e,i</td></tr>
+    <tr><td class="it">H h</td><td>acca</td><td>vaike – ainult C/G pehmendusel: CH=[k], GH=[g]</td></tr>
+    <tr><td class="it">I i</td><td>i</td><td>[i]</td></tr>
+    <tr><td class="it">L l</td><td>elle</td><td>[l]</td></tr>
+    <tr><td class="it">M m</td><td>emme</td><td>[m]</td></tr>
+    <tr><td class="it">N n</td><td>enne</td><td>[n]</td></tr>
+    <tr><td class="it">O o</td><td>o</td><td>[o] – avatud [ɔ] või suletud [o]</td></tr>
+    <tr><td class="it">P p</td><td>pi</td><td>[p]</td></tr>
+    <tr><td class="it">Q q</td><td>qu</td><td>alati QU = [kv]</td></tr>
+    <tr><td class="it">R r</td><td>erre</td><td>veerev [r]</td></tr>
+    <tr><td class="it">S s</td><td>esse</td><td>[s] või [z] (kahe vokaali vahel)</td></tr>
+    <tr><td class="it">T t</td><td>ti</td><td>[t]</td></tr>
+    <tr><td class="it">U u</td><td>u</td><td>[u]</td></tr>
+    <tr><td class="it">V v</td><td>vu/vi</td><td>[v]</td></tr>
+    <tr><td class="it">Z z</td><td>zeta</td><td>[ts] või [dz]</td></tr>
+  </table>
+
+  <h2>Olulised hääldusreeglid</h2>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">C ja G reeglid <span class="accordion-arrow">▶</span></div>
+    <div class="accordion-body">
+      <table>
+        <tr><th>Kombinatsioon</th><th>Hääldus</th><th>Näide</th></tr>
+        <tr><td class="it">ca, co, cu</td><td>[ka, ko, ku]</td><td><span class="it">casa</span> (maja), <span class="it">come</span> (kuidas)</td></tr>
+        <tr><td class="it">ce, ci</td><td>[tʃe, tʃi]</td><td><span class="it">cena</span> (õhtusöök), <span class="it">cinema</span></td></tr>
+        <tr><td class="it">che, chi</td><td>[ke, ki]</td><td><span class="it">che</span> (mis), <span class="it">chi</span> (kes)</td></tr>
+        <tr><td class="it">ga, go, gu</td><td>[ga, go, gu]</td><td><span class="it">gatto</span> (kass), <span class="it">gusto</span></td></tr>
+        <tr><td class="it">ge, gi</td><td>[dʒe, dʒi]</td><td><span class="it">gente</span> (rahvas), <span class="it">giorno</span> (päev)</td></tr>
+        <tr><td class="it">ghe, ghi</td><td>[ge, gi]</td><td><span class="it">spaghetti</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">SC, GL, GN <span class="accordion-arrow">▶</span></div>
+    <div class="accordion-body">
+      <table>
+        <tr><th>Kombinatsioon</th><th>Hääldus</th><th>Näide</th></tr>
+        <tr><td class="it">sci, sce</td><td>[ʃi, ʃe] = "sh"</td><td><span class="it">scena</span>, <span class="it">sciare</span> (suusatama)</td></tr>
+        <tr><td class="it">sca, sco, scu</td><td>[ska, sko, sku]</td><td><span class="it">scuola</span> (kool)</td></tr>
+        <tr><td class="it">gli</td><td>[ʎi] = pehme "lj"</td><td><span class="it">figlio</span> (poeg), <span class="it">iglia</span></td></tr>
+        <tr><td class="it">gn</td><td>[ɲ] = "nj"</td><td><span class="it">bagno</span> (vannituba), <span class="it">ognuno</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">Kahekordne konsonant <span class="accordion-arrow">▶</span></div>
+    <div class="accordion-body">
+      <p>Itaalia keeles on topeltkonsonandid <strong>tähendust eristavad</strong>:</p>
+      <table>
+        <tr><th>Lühike</th><th>Pikk</th></tr>
+        <tr><td><span class="it">pala</span> (labidas)</td><td><span class="it">palla</span> (pall)</td></tr>
+        <tr><td><span class="it">nono</span> (üheksas)</td><td><span class="it">nonno</span> (vanaisa)</td></tr>
+        <tr><td><span class="it">caro</span> (kallis)</td><td><span class="it">carro</span> (käru)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">Rõhk <span class="accordion-arrow">▶</span></div>
+    <div class="accordion-body">
+      <p>Rõhk on enamasti <strong>eelviimasel silbil</strong>. Erandid on märgitud aktsendiga:<br>
+      <span class="it">città</span> (linn), <span class="it">caffè</span> (kohvi), <span class="it">perché</span> (miks/sest)</p>
+      <p>Mõned sagedased erandid (rõhk kolmandal silbil lõpust):<br>
+      <span class="it">tàvolo</span> (laud), <span class="it">màchina</span> (auto), <span class="it">pèrdere</span> (kaotama)</p>
+    </div>
+  </div>
+
+  <div class="section-nav">
+    <span></span>
+    <button class="btn btn-green" onclick="showSection('s-grammatika', document.querySelector('.nav-links a:nth-child(3)'))">Grammatika &rarr;</button>
+  </div>
+</div>
+
+<!-- ===== GRAMMATIKA ===== -->
+<div id="s-grammatika" class="section">
+  <h1>Grammatika alused</h1>
+
+  <h2>1. Artiklid</h2>
+  <p>Itaalia keeles on kaht tüüpi artikleid: <strong>määratud</strong> (il, la, lo...) ja <strong>määramata</strong> (un, una).</p>
+
+  <h3>Määramata artikkel</h3>
+  <table>
+    <tr><th>Sugu</th><th>Tingimus</th><th>Artikkel</th><th>Näide</th></tr>
+    <tr><td>Meessugu</td><td>enamik konsonantidega algavaid</td><td class="it">un</td><td><span class="it">un libro</span> – üks raamat</td></tr>
+    <tr><td>Meessugu</td><td>algab s+kons, z, ps, gn, x, y</td><td class="it">uno</td><td><span class="it">uno studente</span> – üks üliõpilane</td></tr>
+    <tr><td>Naissugu</td><td>algab konsonandiga</td><td class="it">una</td><td><span class="it">una casa</span> – üks maja</td></tr>
+    <tr><td>Naissugu</td><td>algab vokaaliga</td><td class="it">un'</td><td><span class="it">un'amica</span> – üks sõbranna</td></tr>
+  </table>
+
+  <h3>Määratud artikkel</h3>
+  <table>
+    <tr><th>Sugu</th><th>Arv</th><th>Tingimus</th><th>Artikkel</th><th>Näide</th></tr>
+    <tr><td>Meessugu</td><td>ainsus</td><td>enamik</td><td class="it">il</td><td><span class="it">il ragazzo</span></td></tr>
+    <tr><td>Meessugu</td><td>ainsus</td><td>s+kons, z, gn...</td><td class="it">lo</td><td><span class="it">lo zaino</span></td></tr>
+    <tr><td>Meessugu</td><td>ainsus</td><td>vokaali ees</td><td class="it">l'</td><td><span class="it">l'amico</span></td></tr>
+    <tr><td>Meessugu</td><td>mitmus</td><td>il → </td><td class="it">i</td><td><span class="it">i ragazzi</span></td></tr>
+    <tr><td>Meessugu</td><td>mitmus</td><td>lo/l' → </td><td class="it">gli</td><td><span class="it">gli zaini</span></td></tr>
+    <tr><td>Naissugu</td><td>ainsus</td><td>konsonant</td><td class="it">la</td><td><span class="it">la ragazza</span></td></tr>
+    <tr><td>Naissugu</td><td>ainsus</td><td>vokaali ees</td><td class="it">l'</td><td><span class="it">l'amica</span></td></tr>
+    <tr><td>Naissugu</td><td>mitmus</td><td>kõik</td><td class="it">le</td><td><span class="it">le ragazze</span></td></tr>
+  </table>
+
+  <h2>2. Nimisõnade sugu ja mitmus</h2>
+  <table>
+    <tr><th>Lõpp ainsuses</th><th>Sugu</th><th>Mitmus</th><th>Näide</th></tr>
+    <tr><td class="it">-o</td><td>tavaliselt M</td><td class="it">-i</td><td><span class="it">libro → libri</span></td></tr>
+    <tr><td class="it">-a</td><td>tavaliselt N</td><td class="it">-e</td><td><span class="it">casa → case</span></td></tr>
+    <tr><td class="it">-e</td><td>M või N</td><td class="it">-i</td><td><span class="it">fiore → fiori</span> (lill)</td></tr>
+    <tr><td class="it">-ista</td><td>M ja N</td><td class="it">-isti (M) / -iste (N)</td><td><span class="it">artista → artisti/artiste</span></td></tr>
+    <tr><td class="it">-ca/-ga</td><td>N</td><td class="it">-che/-ghe</td><td><span class="it">amica → amiche</span></td></tr>
+    <tr><td class="it">-co/-go</td><td>M</td><td class="it">-chi/-ghi (tavalt)</td><td><span class="it">amico → amici</span></td></tr>
+  </table>
+
+  <div class="note-box">
+    <strong>Erandid:</strong> <span class="it">mano</span> (käsi) on naissoost! <span class="it">problema, tema, sistema</span> on kreeka päritolu -ma lõpuga meessoost sõnad.
+  </div>
+
+  <h2>3. Omadussõnad</h2>
+  <p>Omadussõnad ühilduvad nimisõnaga soos ja arvus.</p>
+  <table>
+    <tr><th></th><th>M ainsus</th><th>N ainsus</th><th>M mitmus</th><th>N mitmus</th></tr>
+    <tr><td><strong>-o/-a tüüp</strong></td><td class="it">bello</td><td class="it">bella</td><td class="it">belli</td><td class="it">belle</td></tr>
+    <tr><td><strong>-e tüüp</strong></td><td class="it">grande</td><td class="it">grande</td><td class="it">grandi</td><td class="it">grandi</td></tr>
+  </table>
+  <p><span class="example">un ragazzo alto</span> – pikk poiss | <span class="example">una ragazza alta</span> – pikk tüdruk</p>
+  <p><span class="example">ragazzi alti</span> – pikad poisid | <span class="example">ragazze alte</span> – pikad tüdrukud</p>
+
+  <h3>Bello (ilus) – erijuhtum</h3>
+  <p>Enne nimisõna käitub <span class="it">bello</span> nagu määratud artikkel:</p>
+  <table>
+    <tr><th>Kontekst</th><th>Vorm</th><th>Näide</th></tr>
+    <tr><td>il → </td><td class="it">bel</td><td><span class="it">un bel ragazzo</span></td></tr>
+    <tr><td>lo → </td><td class="it">bello</td><td><span class="it">un bello zaino</span></td></tr>
+    <tr><td>l' → </td><td class="it">bell'</td><td><span class="it">un bell'uomo</span></td></tr>
+    <tr><td>i → </td><td class="it">bei</td><td><span class="it">bei ragazzi</span></td></tr>
+    <tr><td>gli → </td><td class="it">begli</td><td><span class="it">begli occhi</span></td></tr>
+    <tr><td>la → </td><td class="it">bella</td><td><span class="it">una bella ragazza</span></td></tr>
+    <tr><td>le → </td><td class="it">belle</td><td><span class="it">belle ragazze</span></td></tr>
+  </table>
+
+  <h2>4. Isikulised asesõnad</h2>
+  <table>
+    <tr><th>Isik</th><th>Eesti</th><th>Itaalia</th></tr>
+    <tr><td>1. ainsus</td><td>mina</td><td class="it">io</td></tr>
+    <tr><td>2. ainsus</td><td>sina</td><td class="it">tu</td></tr>
+    <tr><td>3. ainsus M</td><td>tema (mees)</td><td class="it">lui / egli</td></tr>
+    <tr><td>3. ainsus N</td><td>tema (naine)</td><td class="it">lei / ella</td></tr>
+    <tr><td>Viisakus</td><td>Teie</td><td class="it">Lei</td></tr>
+    <tr><td>1. mitmus</td><td>meie</td><td class="it">noi</td></tr>
+    <tr><td>2. mitmus</td><td>teie</td><td class="it">voi</td></tr>
+    <tr><td>3. mitmus</td><td>nemad</td><td class="it">loro</td></tr>
+  </table>
+
+  <div class="note-box">
+    <strong>NB!</strong> Itaalia keeles jäetakse asesõna sageli ära, sest pöördelõpp näitab isikut: <span class="it">Parlo italiano</span> = Ma räägin itaalia keelt.
+  </div>
+
+  <h2>5. Omastav asesõna</h2>
+  <table>
+    <tr><th>Eesti</th><th>M ain.</th><th>N ain.</th><th>M mit.</th><th>N mit.</th></tr>
+    <tr><td>minu</td><td class="it">mio</td><td class="it">mia</td><td class="it">miei</td><td class="it">mie</td></tr>
+    <tr><td>sinu</td><td class="it">tuo</td><td class="it">tua</td><td class="it">tuoi</td><td class="it">tue</td></tr>
+    <tr><td>tema</td><td class="it">suo</td><td class="it">sua</td><td class="it">suoi</td><td class="it">sue</td></tr>
+    <tr><td>meie</td><td class="it">nostro</td><td class="it">nostra</td><td class="it">nostri</td><td class="it">nostre</td></tr>
+    <tr><td>teie</td><td class="it">vostro</td><td class="it">vostra</td><td class="it">vostri</td><td class="it">vostre</td></tr>
+    <tr><td>nende</td><td class="it">loro</td><td class="it">loro</td><td class="it">loro</td><td class="it">loro</td></tr>
+  </table>
+  <div class="note-box">Omastavat asesõna kasutatakse tavaliselt koos artikliga: <span class="it">il mio libro</span>, <span class="it">la mia casa</span>.<br>
+  <strong>Erand:</strong> perekonnaliikmete nimetusi kasutatakse ainsuses ilma artikliga: <span class="it">mio padre</span>, <span class="it">mia madre</span>.</div>
+
+  <h2>6. Küsi- ja eituslaused</h2>
+  <table>
+    <tr><th>Liik</th><th>Näide</th><th>Tõlge</th></tr>
+    <tr><td>Jaatav</td><td class="it">Parli italiano.</td><td>Sa räägid itaalia keelt.</td></tr>
+    <tr><td>Küsiv (intonatsioon)</td><td class="it">Parli italiano?</td><td>Kas sa räägid itaalia keelt?</td></tr>
+    <tr><td>Eitus</td><td class="it">Non parlo italiano.</td><td>Ma ei räägi itaalia keelt.</td></tr>
+  </table>
+  <p>Eitus: pane <span class="it"><strong>non</strong></span> tegusõna ette.</p>
+
+  <div class="section-nav">
+    <button class="btn btn-outline" onclick="showSection('s-haaldumine', document.querySelector('.nav-links a:nth-child(2)'))">← Haaldumine</button>
+    <button class="btn btn-green" onclick="showSection('s-tegusoned', document.querySelector('.nav-links a:nth-child(4)'))">Tegusoned →</button>
+  </div>
+</div>
+
+<!-- ===== TEGUSONED ===== -->
+<div id="s-tegusoned" class="section">
+  <h1>Tegusoned</h1>
+
+  <div class="tense-toggle">
+    <button class="tense-btn active" id="btnPresent" onclick="setTense('present')">Olevik (Presente)</button>
+    <button class="tense-btn" id="btnPast" onclick="setTense('past')">Lihtminevik (Passato prossimo)</button>
+  </div>
+
+  <!-- PRESENT -->
+  <div id="tensePresent">
+    <h2>Olevik – Presente indicativo</h2>
+    <p>Itaalia reeglipärased tegusõnad jagunevad kolme rühma: <strong>-are</strong>, <strong>-ere</strong>, <strong>-ire</strong>.</p>
+
+    <div class="verb-tabs" id="presentTabs">
+      <div class="verb-tab active" onclick="showVerb('are-reg', this, 'present')">-ARE (parlare)</div>
+      <div class="verb-tab" onclick="showVerb('ere-reg', this, 'present')">-ERE (leggere)</div>
+      <div class="verb-tab" onclick="showVerb('ire-reg', this, 'present')">-IRE (dormire)</div>
+      <div class="verb-tab" onclick="showVerb('ire-isc', this, 'present')">-IRE isc (finire)</div>
+      <div class="verb-tab" onclick="showVerb('essere', this, 'present')">essere (olema)</div>
+      <div class="verb-tab" onclick="showVerb('avere', this, 'present')">avere (omama)</div>
+      <div class="verb-tab" onclick="showVerb('andare', this, 'present')">andare (minema)</div>
+      <div class="verb-tab" onclick="showVerb('fare', this, 'present')">fare (tegema)</div>
+      <div class="verb-tab" onclick="showVerb('potere', this, 'present')">potere (saama)</div>
+      <div class="verb-tab" onclick="showVerb('volere', this, 'present')">volere (tahtma)</div>
+      <div class="verb-tab" onclick="showVerb('dovere', this, 'present')">dovere (pidama)</div>
+      <div class="verb-tab" onclick="showVerb('sapere', this, 'present')">sapere (teadma)</div>
+    </div>
+    <div id="verbDisplay" class="paradigm-box"></div>
+  </div>
+
+  <!-- PAST -->
+  <div id="tensePast" style="display:none">
+    <h2>Passato prossimo – lähiminevik</h2>
+    <div class="note-box">
+      <strong>Moodustamine:</strong> <span class="it">avere</span> VÕI <span class="it">essere</span> olevik + <strong>particiip</strong> (participio passato).<br>
+      <strong>Particiip:</strong> -are → <span class="it">-ato</span> | -ere → <span class="it">-uto</span> | -ire → <span class="it">-ito</span>
+    </div>
+    <div class="note-box">
+      <strong>avere vs essere:</strong> Enamik tegusõnu kasutab <span class="it">avere</span>. <span class="it">Essere</span>-ga kasutatakse liikumist, olekumuutust ja kõik refleksiivsed tegusõnad. Essere-ga partitsiip ühildub subjektiga!
+    </div>
+
+    <div class="verb-tabs" id="pastTabs">
+      <div class="verb-tab active" onclick="showVerb('pp-avere', this, 'past')">avere + parlare</div>
+      <div class="verb-tab" onclick="showVerb('pp-essere', this, 'past')">essere + andare</div>
+      <div class="verb-tab" onclick="showVerb('pp-irreg', this, 'past')">Ebareeglipärased partitsiibid</div>
+    </div>
+    <div id="verbDisplayPast" class="paradigm-box"></div>
+  </div>
+
+  <h2>Sagedased ebareeglipärased tegusõnad</h2>
+  <table>
+    <tr><th>Infinitiv</th><th>Tähendus</th><th>Eripära</th></tr>
+    <tr><td class="it">essere</td><td>olema</td><td>täiesti ebareeglipärane</td></tr>
+    <tr><td class="it">avere</td><td>omama/olema (abites.)</td><td>ebareeglipärane</td></tr>
+    <tr><td class="it">andare</td><td>minema</td><td>vado, vai, va, andiamo...</td></tr>
+    <tr><td class="it">fare</td><td>tegema</td><td>faccio, fai, fa, facciamo...</td></tr>
+    <tr><td class="it">venire</td><td>tulema</td><td>vengo, vieni, viene...</td></tr>
+    <tr><td class="it">dire</td><td>ütlema</td><td>dico, dici, dice...</td></tr>
+    <tr><td class="it">uscire</td><td>väljuma</td><td>esco, esci, esce...</td></tr>
+    <tr><td class="it">potere</td><td>saama/võima</td><td>posso, puoi, può...</td></tr>
+    <tr><td class="it">volere</td><td>tahtma</td><td>voglio, vuoi, vuole...</td></tr>
+    <tr><td class="it">dovere</td><td>pidama</td><td>devo, devi, deve...</td></tr>
+    <tr><td class="it">sapere</td><td>teadma/oskama</td><td>so, sai, sa...</td></tr>
+    <tr><td class="it">stare</td><td>olema (seisundis)</td><td>sto, stai, sta...</td></tr>
+  </table>
+
+  <div class="section-nav">
+    <button class="btn btn-outline" onclick="showSection('s-grammatika', document.querySelector('.nav-links a:nth-child(3)'))">← Grammatika</button>
+    <button class="btn btn-green" onclick="showSection('s-soned', document.querySelector('.nav-links a:nth-child(5)'))">Sonad →</button>
+  </div>
+</div>
+
+<!-- ===== SONAD ===== -->
+<div id="s-soned" class="section">
+  <h1>Sagedasemad sõnad</h1>
+  <p>Kliki kaardil, et tõlget näha või peita.</p>
+
+  <div id="vocabTabs" class="verb-tabs">
+    <div class="verb-tab active" onclick="showVocab('tervitused', this)">Tervitamine</div>
+    <div class="verb-tab" onclick="showVocab('numbrid', this)">Numbrid</div>
+    <div class="verb-tab" onclick="showVocab('perekond', this)">Perekond</div>
+    <div class="verb-tab" onclick="showVocab('toit', this)">Toit & jook</div>
+    <div class="verb-tab" onclick="showVocab('varvid', this)">Värvid</div>
+    <div class="verb-tab" onclick="showVocab('keha', this)">Kehaosad</div>
+    <div class="verb-tab" onclick="showVocab('aeg', this)">Aeg</div>
+    <div class="verb-tab" onclick="showVocab('koht', this)">Koht & suund</div>
+    <div class="verb-tab" onclick="showVocab('omadused', this)">Omadussõnad</div>
+    <div class="verb-tab" onclick="showVocab('tegusoned-list', this)">Tegusõnad</div>
+  </div>
+  <div id="vocabDisplay"></div>
+
+  <div class="section-nav">
+    <button class="btn btn-outline" onclick="showSection('s-tegusoned', document.querySelector('.nav-links a:nth-child(4)'))">← Tegusoned</button>
+    <button class="btn btn-green" onclick="showSection('s-harjutused', document.querySelector('.nav-links a:nth-child(6)'))">Harjutused →</button>
+  </div>
+</div>
+
+<!-- ===== HARJUTUSED ===== -->
+<div id="s-harjutused" class="section">
+  <h1>Harjutused</h1>
+
+  <!-- EX 1: Artiklid -->
+  <div class="exercise">
+    <h3>1. Määramata artikkel</h3>
+    <p>Vali igale sõnale õige artikkel.</p>
+    <div id="ex1"></div>
+    <div style="margin-top:1rem;display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-green" onclick="checkEx1()">Kontrolli</button>
+      <button class="btn btn-outline" onclick="resetEx1()">Tühista</button>
+    </div>
+    <div class="score-box" id="ex1score"></div>
+  </div>
+
+  <!-- EX 2: Olevik -->
+  <div class="exercise">
+    <h3>2. Pöora tegusõna olevikus</h3>
+    <p>Kirjuta tegusõna õige pöördevorm.</p>
+    <div id="ex2"></div>
+    <div style="display:flex;gap:0.8rem;margin-top:1rem">
+      <button class="btn btn-green" onclick="checkEx2()">Kontrolli</button>
+      <button class="btn btn-outline" onclick="resetEx2()">Tühista</button>
+    </div>
+    <div class="score-box" id="ex2score"></div>
+  </div>
+
+  <!-- EX 3: valikvastus -->
+  <div class="exercise">
+    <h3>3. Tõlgi itaalia keelde – valikvastus</h3>
+    <div id="ex3q" class="mc-question"></div>
+    <div class="mc-options" id="ex3opts"></div>
+    <div id="ex3fb" style="margin-top:0.5rem;font-size:0.9rem"></div>
+    <div style="margin-top:1rem">
+      <button class="btn btn-green" onclick="nextMC()">Järgmine küsimus</button>
+      <span style="margin-left:1rem;color:var(--mid);font-size:0.85rem">Skoor: <strong id="mcScore">0</strong> / <strong id="mcTotal">0</strong></span>
+    </div>
+  </div>
+
+  <!-- EX 4: Passato prossimo -->
+  <div class="exercise">
+    <h3>4. Passato prossimo</h3>
+    <p>Moodusta lause passato prossimos.</p>
+    <div id="ex4"></div>
+    <div style="display:flex;gap:0.8rem;margin-top:1rem">
+      <button class="btn btn-green" onclick="checkEx4()">Kontrolli</button>
+      <button class="btn btn-outline" onclick="resetEx4()">Tühista</button>
+    </div>
+    <div class="score-box" id="ex4score"></div>
+  </div>
+
+  <div class="section-nav">
+    <button class="btn btn-outline" onclick="showSection('s-soned', document.querySelector('.nav-links a:nth-child(5)'))">← Sonad</button>
+    <button class="btn btn-green" onclick="showSection('s-kaardid', document.querySelector('.nav-links a:nth-child(7)'))">Kaardimang →</button>
+  </div>
+</div>
+
+<!-- ===== KAARDIMANG ===== -->
+<div id="s-kaardid" class="section">
+  <h1>Kaardimäng</h1>
+  <p>Kliki kaardil. Kasuta nuppe "ei teadnud" / "teadsin".</p>
+
+  <div style="margin-bottom:1rem">
+    <label style="font-size:0.9rem;color:var(--mid)">Kaardipakett: </label>
+    <select id="deckSelect" onchange="loadDeck()" style="padding:0.4rem 0.8rem;border:2px solid var(--border);border-radius:6px;font-size:0.9rem;font-family:inherit">
+      <option value="tervitused">Tervitused & fraasid</option>
+      <option value="numbrid">Numbrid</option>
+      <option value="perekond">Perekond</option>
+      <option value="toit">Toit & jook</option>
+      <option value="varvid">Värvid</option>
+      <option value="keha">Kehaosad</option>
+      <option value="aeg">Aeg</option>
+      <option value="tegusoned-list">Sagedasemad tegusõnad</option>
+    </select>
+  </div>
+
+  <div class="flashcard-wrap" onclick="flipCard()">
+    <div class="flashcard" id="flashcard">
+      <div class="card-face card-front">
+        <div class="card-word" id="cardWord">–</div>
+        <div class="card-hint" id="cardHint">kliki, et näha tõlget</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-transl" id="cardTransl">–</div>
+        <div class="card-extra" id="cardExtra"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flashcard-controls">
+    <button class="btn btn-red" onclick="cardResult(false)">Ei teadnud</button>
+    <span class="card-counter" id="cardCounter">0 / 0</span>
+    <button class="btn btn-green" onclick="cardResult(true)">Teadsin!</button>
+  </div>
+
+  <div style="margin-top:1.5rem;background:white;border-radius:8px;padding:1rem;box-shadow:var(--shadow)">
+    <strong>Tulemus:</strong>
+    Teadsin: <strong id="cardKnown" style="color:var(--green)">0</strong> |
+    Ei teadnud: <strong id="cardUnknown" style="color:var(--red)">0</strong> |
+    Jäänud: <strong id="cardLeft">0</strong>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ============ TIMER ============
+let timerRunning = false;
+let timerInterval = null;
+let todaySeconds = 0;
+let totalSeconds = parseInt(localStorage.getItem('itTotalSeconds') || '0');
+let sessions = parseInt(localStorage.getItem('itSessions') || '0');
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timerBtn').textContent = 'Jatka';
+    localStorage.setItem('itTotalSeconds', totalSeconds);
+  } else {
+    timerRunning = true;
+    document.getElementById('timerBtn').textContent = 'Peata';
+    if (todaySeconds === 0) {
+      sessions++;
+      localStorage.setItem('itSessions', sessions);
+      document.getElementById('navSessions').textContent = sessions;
+    }
+    timerInterval = setInterval(() => {
+      todaySeconds++;
+      totalSeconds++;
+      updateTimerDisplay();
+    }, 1000);
+  }
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  todaySeconds = 0;
+  document.getElementById('timerBtn').textContent = 'Alusta';
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(todaySeconds / 60);
+  const s = todaySeconds % 60;
+  document.getElementById('timerDisplay').textContent = m + ':' + String(s).padStart(2,'0');
+  const totalH = totalSeconds / 3600;
+  document.getElementById('totalHoursDisplay').textContent = totalH.toFixed(1);
+  const pct = Math.min(100, totalH / 20 * 100);
+  document.getElementById('timerProgFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = Math.floor(pct);
+  document.getElementById('progressBar').style.width = pct + '%';
+  const nm = Math.floor(totalSeconds / 60);
+  const ns = totalSeconds % 60;
+  document.getElementById('navTime').textContent = nm + ':' + String(ns).padStart(2,'0');
+  localStorage.setItem('itTotalSeconds', totalSeconds);
+}
+document.getElementById('navSessions').textContent = sessions;
+updateTimerDisplay();
+
+// ============ NAV ============
+function showSection(id, linkEl, bnavEl) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  if (bnavEl) bnavEl.classList.add('active');
+  const bnavMatch = document.getElementById('bnav-' + id);
+  if (bnavMatch) bnavMatch.classList.add('active');
+  const navMatch = document.querySelector(`.nav-links a[onclick*="${id}"]`);
+  if (navMatch) navMatch.classList.add('active');
+  // vocab jaotis: laadi sisu alati uuesti
+  if (id === 's-soned') {
+    const activeTab = document.querySelector('#vocabTabs .verb-tab.active');
+    const firstTab = document.querySelector('#vocabTabs .verb-tab');
+    const tab = activeTab || firstTab;
+    if (tab) {
+      const key = tab.getAttribute('onclick').match(/'([^']+)'/)[1];
+      showVocab(key, tab);
+    }
+  }
+  window.scrollTo(0, 0);
+}
+
+// ============ ACCORDION ============
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+  header.classList.toggle('open');
+}
+
+// ============ VERB DATA ============
+const verbs = {
+  'are-reg': {
+    title: 'Regulaarne -ARE: parlare (rääkima)',
+    rows: [
+      ['io', 'parlo', 'ma räägin'],
+      ['tu', 'parli', 'sa räägid'],
+      ['lui/lei', 'parla', 'ta räägib'],
+      ['noi', 'parliamo', 'me räägime'],
+      ['voi', 'parlate', 'te räägite'],
+      ['loro', 'parlano', 'nad räägivad'],
+    ],
+    note: 'Lõpud: -o, -i, -a, -iamo, -ate, -ano',
+    examples: ['parlare, lavorare (töötama), abitare (elama), amare (armastama), mangiare (sööma), giocare (mängima)']
+  },
+  'ere-reg': {
+    title: 'Regulaarne -ERE: leggere (lugema)',
+    rows: [
+      ['io', 'leggo', 'ma loen'],
+      ['tu', 'leggi', 'sa loed'],
+      ['lui/lei', 'legge', 'ta loeb'],
+      ['noi', 'leggiamo', 'me loeme'],
+      ['voi', 'leggete', 'te loete'],
+      ['loro', 'leggono', 'nad loevad'],
+    ],
+    note: 'Lõpud: -o, -i, -e, -iamo, -ete, -ono',
+    examples: ['leggere, scrivere (kirjutama), vedere (nägema), prendere (võtma), chiudere (sulgema)']
+  },
+  'ire-reg': {
+    title: 'Regulaarne -IRE: dormire (magama)',
+    rows: [
+      ['io', 'dormo', 'ma magan'],
+      ['tu', 'dormi', 'sa magad'],
+      ['lui/lei', 'dorme', 'ta magab'],
+      ['noi', 'dormiamo', 'me magame'],
+      ['voi', 'dormite', 'te magате'],
+      ['loro', 'dormono', 'nad magavad'],
+    ],
+    note: 'Lõpud: -o, -i, -e, -iamo, -ite, -ono',
+    examples: ['dormire, partire (lahkuma), sentire (tundma/kuulma), aprire (avama)']
+  },
+  'ire-isc': {
+    title: '-IRE (isc-tüüp): finire (lõpetama)',
+    rows: [
+      ['io', 'finisco', 'ma lõpetan'],
+      ['tu', 'finisci', 'sa lõpetad'],
+      ['lui/lei', 'finisce', 'ta lõpetab'],
+      ['noi', 'finiamo', 'me lõpetame'],
+      ['voi', 'finite', 'te lõpetate'],
+      ['loro', 'finiscono', 'nad lõpetavad'],
+    ],
+    note: 'Pööretes io/tu/lui/loro lisandub -isc-. Noi/voi on tavalised.',
+    examples: ['finire, capire (mõistma), preferire (eelistama), pulire (puhastama), costruire (ehitama)']
+  },
+  'essere': {
+    title: 'essere – olema',
+    rows: [
+      ['io', 'sono', 'ma olen'],
+      ['tu', 'sei', 'sa oled'],
+      ['lui/lei', 'è', 'ta on'],
+      ['noi', 'siamo', 'me oleme'],
+      ['voi', 'siete', 'te olete'],
+      ['loro', 'sono', 'nad on'],
+    ],
+    note: 'Täielikult ebareeglipärane. Kasutatakse ka passato prossimos abitegsõnana.',
+    examples: ['Sono italiano. (Ma olen itaallane.)', 'Sei stanco? (Kas sa oled väsinud?)', 'Siamo a Roma. (Me oleme Roomas.)']
+  },
+  'avere': {
+    title: 'avere – omama / (olema)',
+    rows: [
+      ['io', 'ho', 'mul on'],
+      ['tu', 'hai', 'sul on'],
+      ['lui/lei', 'ha', 'tal on'],
+      ['noi', 'abbiamo', 'meil on'],
+      ['voi', 'avete', 'teil on'],
+      ['loro', 'hanno', 'neil on'],
+    ],
+    note: 'NB! io/tu/lui/loro-pööretes on h-täht vaike (mitte häälduv).',
+    examples: ['Ho un cane. (Mul on koer.)', 'Hai fame? (Kas sul on nälg?)', 'Ha vent\'anni. (Ta on 20-aastane.)']
+  },
+  'andare': {
+    title: 'andare – minema',
+    rows: [
+      ['io', 'vado', 'ma lähen'],
+      ['tu', 'vai', 'sa lähed'],
+      ['lui/lei', 'va', 'ta läheb'],
+      ['noi', 'andiamo', 'me läheme'],
+      ['voi', 'andate', 'te lähete'],
+      ['loro', 'vanno', 'nad lähevad'],
+    ],
+    note: 'Ebareeglipärane io/tu/lui/loro pööretes. Noi/voi on reeglipärased.',
+    examples: ['Vado a scuola. (Ma lähen kooli.)', 'Andiamo! (Läheme!)', 'Dove vai? (Kuhu sa lähed?)']
+  },
+  'fare': {
+    title: 'fare – tegema',
+    rows: [
+      ['io', 'faccio', 'ma teen'],
+      ['tu', 'fai', 'sa teed'],
+      ['lui/lei', 'fa', 'ta teeb'],
+      ['noi', 'facciamo', 'me teeme'],
+      ['voi', 'fate', 'te teete'],
+      ['loro', 'fanno', 'nad teevad'],
+    ],
+    note: 'Sagedane tegusõna paljudes väljendustes: fare sport, fare colazione jne.',
+    examples: ['Faccio sport. (Ma teen sporti.)', 'Che fai? (Mida sa teed?)', 'Fa caldo. (On soe.)']
+  },
+  'potere': {
+    title: 'potere – saama/võima',
+    rows: [
+      ['io', 'posso', 'ma saan/võin'],
+      ['tu', 'puoi', 'sa saad/võid'],
+      ['lui/lei', 'può', 'ta saab/võib'],
+      ['noi', 'possiamo', 'me saame/võime'],
+      ['voi', 'potete', 'te saate/võite'],
+      ['loro', 'possono', 'nad saavad/võivad'],
+    ],
+    note: 'Modaalverb – järgneb infinitiiv: Posso parlare? (Kas ma võin rääkida?)',
+    examples: ['Posso aiutarti? (Kas ma saan aidata?)', 'Non posso venire. (Ma ei saa tulla.)']
+  },
+  'volere': {
+    title: 'volere – tahtma',
+    rows: [
+      ['io', 'voglio', 'ma tahan'],
+      ['tu', 'vuoi', 'sa tahad'],
+      ['lui/lei', 'vuole', 'ta tahab'],
+      ['noi', 'vogliamo', 'me tahame'],
+      ['voi', 'volete', 'te tahate'],
+      ['loro', 'vogliono', 'nad tahavad'],
+    ],
+    note: 'Modaalverb. Saab kasutada ka iseseisvalt: Voglio un caffè. (Tahan kohvi.)',
+    examples: ['Voglio imparare l\'italiano. (Tahan itaalia keelt õppida.)', 'Vuoi venire? (Kas sa tahad tulla?)']
+  },
+  'dovere': {
+    title: 'dovere – pidama/tuleb',
+    rows: [
+      ['io', 'devo', 'ma pean'],
+      ['tu', 'devi', 'sa pead'],
+      ['lui/lei', 'deve', 'ta peab'],
+      ['noi', 'dobbiamo', 'me peame'],
+      ['voi', 'dovete', 'te peate'],
+      ['loro', 'devono', 'nad peavad'],
+    ],
+    note: 'Modaalverb – kohustus.',
+    examples: ['Devo studiare. (Ma pean õppima.)', 'Dobbiamo andare. (Me peame minema.)']
+  },
+  'sapere': {
+    title: 'sapere – teadma/oskama',
+    rows: [
+      ['io', 'so', 'ma tean/oskan'],
+      ['tu', 'sai', 'sa tead/oskad'],
+      ['lui/lei', 'sa', 'ta teab/oskab'],
+      ['noi', 'sappiamo', 'me teame/oskame'],
+      ['voi', 'sapete', 'te teate/oskata'],
+      ['loro', 'sanno', 'nad teavad/oskavad'],
+    ],
+    note: 'sapere = teadma (fakti) / oskama (keelt, tegevust). Erinevalt potere (füüsiline võimalus).',
+    examples: ['So parlare italiano. (Ma oskan itaalia keelt.)', 'Sai dove abita? (Kas tead, kus ta elab?)']
+  },
+  'pp-avere': {
+    title: 'Passato prossimo – avere + parlare',
+    rows: [
+      ['io', 'ho parlato', 'ma rääkisin'],
+      ['tu', 'hai parlato', 'sa rääkisid'],
+      ['lui/lei', 'ha parlato', 'ta rääkis'],
+      ['noi', 'abbiamo parlato', 'me rääkisime'],
+      ['voi', 'avete parlato', 'te rääkisite'],
+      ['loro', 'hanno parlato', 'nad rääkisid'],
+    ],
+    note: 'avere + verbi participio. Partitsiip ei muutu! Kasutatakse: enamik tegusõnu.',
+    examples: ['Ho mangiato la pizza. (Sõin pitsat.)', 'Hai visto il film? (Kas nägid filmi?)', 'Abbiamo lavorato. (Me töötasime.)']
+  },
+  'pp-essere': {
+    title: 'Passato prossimo – essere + andare',
+    rows: [
+      ['io (M)', 'sono andato', 'ma läksin'],
+      ['io (N)', 'sono andata', 'ma läksin'],
+      ['tu (M)', 'sei andato', 'sa läksid'],
+      ['tu (N)', 'sei andata', 'sa läksid'],
+      ['lui', 'è andato', 'ta läks'],
+      ['lei', 'è andata', 'ta läks'],
+      ['noi (M)', 'siamo andati', 'me läksime'],
+      ['noi (N)', 'siamo andate', 'me läksime'],
+      ['voi (M)', 'siete andati', 'te läksite'],
+      ['loro', 'sono andati/e', 'nad läksid'],
+    ],
+    note: 'essere-ga: particiip sobitub subjektiga soos ja arvus!',
+    examples: ['Sono andato/a a Roma. (Läksin Rooma.)', 'È arrivata Maria. (Maria saabus.)', 'Siamo usciti. (Me läksime välja.)']
+  },
+  'pp-irreg': {
+    title: 'Ebareeglipärased partitsiibid',
+    rows: [
+      ['fare', 'fatto', 'teinud'],
+      ['essere', 'stato/a', 'olnud'],
+      ['avere', 'avuto', 'omanud'],
+      ['leggere', 'letto', 'lugenud'],
+      ['scrivere', 'scritto', 'kirjutanud'],
+      ['vedere', 'visto', 'näinud'],
+      ['venire', 'venuto', 'tulnud'],
+      ['mettere', 'messo', 'pannud'],
+      ['prendere', 'preso', 'võtnud'],
+      ['aprire', 'aperto', 'avanud'],
+      ['dire', 'detto', 'öelnud'],
+      ['bere', 'bevuto', 'joonud'],
+      ['conoscere', 'conosciuto', 'tundnud'],
+      ['nascere', 'nato', 'sündinud'],
+      ['morire', 'morto', 'surnud'],
+    ],
+    note: 'Need tuleb meelde jätta! Ebareeglipärased partitsiibid on sagedased.',
+    examples: ['Ho fatto i compiti. (Tegin kodutöö.)', 'Sei stato a Venezia? (Kas oled Veneetsias käinud?)', 'Ho letto il libro. (Lugesin raamatu.)']
+  }
+};
+
+function renderVerb(data) {
+  let html = `<h3>${data.title}</h3><div class="conj-table">`;
+  for (const [pron, form, transl] of data.rows) {
+    html += `<span class="pron">${pron}</span><span class="form">${form}</span><span class="transl">${transl}</span>`;
+  }
+  html += '</div>';
+  if (data.note) html += `<div class="note-box" style="margin-top:0.8rem"><strong>Märkus:</strong> ${data.note}</div>`;
+  if (data.examples) {
+    html += '<div style="margin-top:0.6rem;font-size:0.88rem"><strong>Näited:</strong><ul style="margin:0.3rem 0 0 1.2rem">';
+    for (const ex of data.examples) html += `<li style="margin-bottom:0.2rem"><span style="color:var(--accent);font-style:italic">${ex}</span></li>`;
+    html += '</ul></div>';
+  }
+  return html;
+}
+
+function showVerb(key, tabEl, tense) {
+  const tabsId = tense === 'past' ? 'pastTabs' : 'presentTabs';
+  const displayId = tense === 'past' ? 'verbDisplayPast' : 'verbDisplay';
+  document.querySelectorAll('#' + tabsId + ' .verb-tab').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+  document.getElementById(displayId).innerHTML = renderVerb(verbs[key]);
+}
+
+function setTense(t) {
+  document.getElementById('tensePresent').style.display = t === 'present' ? '' : 'none';
+  document.getElementById('tensePast').style.display = t === 'past' ? '' : 'none';
+  document.getElementById('btnPresent').classList.toggle('active', t === 'present');
+  document.getElementById('btnPast').classList.toggle('active', t === 'past');
+  if (t === 'present') {
+    document.getElementById('verbDisplay').innerHTML = renderVerb(verbs['are-reg']);
+  } else {
+    document.getElementById('verbDisplayPast').innerHTML = renderVerb(verbs['pp-avere']);
+  }
+}
+// init verb display
+document.getElementById('verbDisplay').innerHTML = renderVerb(verbs['are-reg']);
+
+// ============ VOCAB DATA ============
+const vocabData = {
+  tervitused: [
+    {it:'Ciao', et:'Tere / Head aega (mitteametlik)'},
+    {it:'Salve', et:'Tere (neutraalne)'},
+    {it:'Buongiorno', et:'Tere hommikust / Head päeva'},
+    {it:'Buonasera', et:'Tere õhtust'},
+    {it:'Buonanotte', et:'Head ööd'},
+    {it:'Arrivederci', et:'Nägemiseni (ametlik)'},
+    {it:'A presto', et:'Varsti nägemiseni'},
+    {it:'Come stai?', et:'Kuidas läheb? (sina)'},
+    {it:'Come sta?', et:'Kuidas läheb? (Teie)'},
+    {it:'Bene, grazie', et:'Hästi, aitäh'},
+    {it:'Non c\'è male', et:'Pole paha / Ei ole halb'},
+    {it:'Così così', et:'Nii ja naa'},
+    {it:'Prego', et:'Palun / Ole hea / Ei-eest'},
+    {it:'Scusi / Scusa', et:'Vabandage / vabanda'},
+    {it:'Mi dispiace', et:'Mul on kahju'},
+    {it:'Per favore', et:'Palun'},
+    {it:'Grazie mille', et:'Tuhat tänu'},
+    {it:'Non capisco', et:'Ma ei saa aru'},
+    {it:'Parla italiano?', et:'Räägid itaalia keelt?'},
+    {it:'Parla più lento', et:'Rääkige aeglasemalt'},
+    {it:'Come si chiama?', et:'Mis teie nimi on?'},
+    {it:'Mi chiamo...', et:'Minu nimi on...'},
+    {it:'Sono di...', et:'Ma olen pärit...'},
+    {it:'Piacere!', et:'Meeldiv tutvuda!'},
+  ],
+  numbrid: [
+    {it:'zero', et:'null'},{it:'uno', et:'üks'},{it:'due', et:'kaks'},{it:'tre', et:'kolm'},
+    {it:'quattro', et:'neli'},{it:'cinque', et:'viis'},{it:'sei', et:'kuus'},{it:'sette', et:'seitse'},
+    {it:'otto', et:'kaheksa'},{it:'nove', et:'üheksa'},{it:'dieci', et:'kümme'},{it:'undici', et:'üksteist'},
+    {it:'dodici', et:'kaksteist'},{it:'tredici', et:'kolmteist'},{it:'quattordici', et:'neliteist'},
+    {it:'quindici', et:'viisteist'},{it:'sedici', et:'kuusteist'},{it:'diciassette', et:'seitseteist'},
+    {it:'diciotto', et:'kaheksateist'},{it:'diciannove', et:'üheksateist'},{it:'venti', et:'kakskümmend'},
+    {it:'trenta', et:'kolmkümmend'},{it:'quaranta', et:'nelikümmend'},{it:'cinquanta', et:'viiskümmend'},
+    {it:'sessanta', et:'kuuskümmend'},{it:'settanta', et:'seitsekümmend'},{it:'ottanta', et:'kaheksakümmend'},
+    {it:'novanta', et:'üheksakümmend'},{it:'cento', et:'sada'},{it:'mille', et:'tuhat'},
+    {it:'primo', et:'esimene'},{it:'secondo', et:'teine'},{it:'terzo', et:'kolmas'},
+  ],
+  perekond: [
+    {it:'la famiglia', et:'perekond'},{it:'il padre', et:'isa'},{it:'la madre', et:'ema'},
+    {it:'il figlio', et:'poeg'},{it:'la figlia', et:'tütar'},{it:'il fratello', et:'vend'},
+    {it:'la sorella', et:'õde'},{it:'il nonno', et:'vanaisa'},{it:'la nonna', et:'vanaema'},
+    {it:'lo zio', et:'onu'},{it:'la zia', et:'tädi'},{it:'il cugino', et:'nõbu (M)'},
+    {it:'la cugina', et:'nõbu (N)'},{it:'il marito', et:'abikaasa (M)'},{it:'la moglie', et:'abikaasa (N)'},
+    {it:'il fidanzato', et:'peigmees/kihlatud'},{it:'la fidanzata', et:'pruut/kihlatud'},
+    {it:'l\'amico/a', et:'sõber/sõbranna'},{it:'i genitori', et:'vanemad'},{it:'i figli', et:'lapsed'},
+  ],
+  toit: [
+    {it:'il pane', et:'leib'},{it:'la pasta', et:'pasta'},{it:'la pizza', et:'pitsa'},
+    {it:'il riso', et:'riis'},{it:'la carne', et:'liha'},{it:'il pesce', et:'kala'},
+    {it:'la verdura', et:'köögivili'},{it:'la frutta', et:'puuvili'},{it:'il pomodoro', et:'tomat'},
+    {it:'la mela', et:'õun'},{it:'l\'arancia', et:'apelsin'},{it:'il formaggio', et:'juust'},
+    {it:'l\'uovo', et:'muna'},{it:'il latte', et:'piim'},{it:'il caffè', et:'kohvi'},
+    {it:'il tè', et:'tee'},{it:'l\'acqua', et:'vesi'},{it:'il vino', et:'vein'},
+    {it:'la birra', et:'õlu'},{it:'il succo', et:'mahl'},{it:'lo zucchero', et:'suhkur'},
+    {it:'il sale', et:'sool'},{it:'l\'olio', et:'öli'},{it:'il gelato', et:'jäätis'},
+    {it:'la torta', et:'kook'},{it:'il dolce', et:'maiustus/magustoit'},{it:'la colazione', et:'hommikusöök'},
+    {it:'il pranzo', et:'lõunasöök'},{it:'la cena', et:'õhtusöök'},{it:'lo spuntino', et:'vahepala'},
+  ],
+  varvid: [
+    {it:'rosso/a', et:'punane'},{it:'blu', et:'sinine (tumesinine)'},{it:'azzurro/a', et:'helesinine'},
+    {it:'verde', et:'roheline'},{it:'giallo/a', et:'kollane'},{it:'arancione', et:'oranž'},
+    {it:'viola', et:'lilla'},{it:'rosa', et:'roosa'},{it:'nero/a', et:'must'},
+    {it:'bianco/a', et:'valge'},{it:'grigio/a', et:'hall'},{it:'marrone', et:'pruun'},
+    {it:'beige', et:'beež'},{it:'chiaro/a', et:'hele'},{it:'scuro/a', et:'tume'},
+  ],
+  keha: [
+    {it:'la testa', et:'pea'},{it:'il viso / la faccia', et:'nägu'},{it:'gli occhi', et:'silmad'},
+    {it:'l\'occhio', et:'silm'},{it:'il naso', et:'nina'},{it:'la bocca', et:'suu'},
+    {it:'l\'orecchio', et:'kõrv'},{it:'i capelli', et:'juuksed'},{it:'il collo', et:'kael'},
+    {it:'la spalla', et:'õlg'},{it:'il braccio', et:'käsivars'},{it:'la mano', et:'käsi'},
+    {it:'le dita', et:'sõrmed'},{it:'il dito', et:'sõrm'},{it:'il petto', et:'rind/rindkere'},
+    {it:'lo stomaco', et:'kõht/magu'},{it:'la schiena', et:'selg'},{it:'la gamba', et:'jalg'},
+    {it:'il ginocchio', et:'põlv'},{it:'il piede', et:'jalg (jalalaba)'},{it:'il cuore', et:'süda'},
+  ],
+  aeg: [
+    {it:'oggi', et:'täna'},{it:'ieri', et:'eile'},{it:'domani', et:'homme'},
+    {it:'dopodomani', et:'ülehomme'},{it:'l\'altro ieri', et:'üleeile'},
+    {it:'adesso / ora', et:'praegu'},{it:'presto', et:'vara/varsti'},{it:'tardi', et:'hilja'},
+    {it:'sempre', et:'alati'},{it:'mai', et:'kunagi (ei)'},{it:'spesso', et:'tihti'},
+    {it:'di solito', et:'tavaliselt'},{it:'a volte', et:'mõnikord'},{it:'già', et:'juba'},
+    {it:'ancora', et:'veel/ikka'},{it:'il mattino', et:'hommik'},{it:'il pomeriggio', et:'pärastlõuna'},
+    {it:'la sera', et:'õhtu'},{it:'la notte', et:'öö'},{it:'la settimana', et:'nädal'},
+    {it:'il mese', et:'kuu'},{it:'l\'anno', et:'aasta'},{it:'lunedì', et:'esmaspäev'},
+    {it:'martedì', et:'teisipäev'},{it:'mercoledì', et:'kolmapäev'},{it:'giovedì', et:'neljapäev'},
+    {it:'venerdì', et:'reede'},{it:'sabato', et:'laupäev'},{it:'domenica', et:'pühapäev'},
+    {it:'gennaio', et:'jaanuar'},{it:'febbraio', et:'veebruar'},{it:'marzo', et:'märts'},
+    {it:'aprile', et:'aprill'},{it:'maggio', et:'mai'},{it:'giugno', et:'juuni'},
+    {it:'luglio', et:'juuli'},{it:'agosto', et:'august'},{it:'settembre', et:'september'},
+    {it:'ottobre', et:'oktoober'},{it:'novembre', et:'november'},{it:'dicembre', et:'detsember'},
+  ],
+  koht: [
+    {it:'qui / qua', et:'siin'},{it:'lì / là', et:'seal'},{it:'vicino', et:'lähedal'},
+    {it:'lontano', et:'kaugel'},{it:'dentro', et:'sees'},{it:'fuori', et:'väljas'},
+    {it:'sopra', et:'üleval/peal'},{it:'sotto', et:'all/all'},
+    {it:'davanti a', et:'ees'},{it:'dietro a', et:'taga'},{it:'a destra', et:'paremal'},
+    {it:'a sinistra', et:'vasakul'},{it:'dritto', et:'otse'},{it:'in centro', et:'kesklinnas'},
+    {it:'la città', et:'linn'},{it:'il paese', et:'küla/riik'},{it:'la strada', et:'tänav'},
+    {it:'la piazza', et:'väljak'},{it:'il negozio', et:'pood'},{it:'il mercato', et:'turg'},
+    {it:'la scuola', et:'kool'},{it:'l\'università', et:'ülikool'},{it:'l\'ospedale', et:'haigla'},
+    {it:'la farmacia', et:'apteek'},{it:'il ristorante', et:'restoran'},{it:'il bar', et:'baar/kohvik'},
+    {it:'l\'albergo', et:'hotell'},{it:'la stazione', et:'jaam'},{it:'l\'aeroporto', et:'lennujaam'},
+    {it:'la banca', et:'pank'},{it:'il museo', et:'muuseum'},{it:'il parco', et:'park'},
+  ],
+  omadused: [
+    {it:'grande', et:'suur'},{it:'piccolo/a', et:'väike'},{it:'lungo/a', et:'pikk (asi)'},
+    {it:'corto/a', et:'lühike'},{it:'alto/a', et:'pikk (inimene)/kõrge'},{it:'basso/a', et:'madal/lühike'},
+    {it:'bello/a', et:'ilus'},{it:'brutto/a', et:'inetu/halb'},{it:'buono/a', et:'hea'},
+    {it:'cattivo/a', et:'halb/kuri'},{it:'nuovo/a', et:'uus'},{it:'vecchio/a', et:'vana'},
+    {it:'giovane', et:'noor'},{it:'vecchio/a', et:'vana'},{it:'caro/a', et:'kallis (hind/armas)'},
+    {it:'economico/a', et:'odav'},{it:'facile', et:'lihtne'},{it:'difficile', et:'raske'},
+    {it:'interessante', et:'huvitav'},{it:'noioso/a', et:'igav'},{it:'divertente', et:'lõbus'},
+    {it:'stanco/a', et:'väsinud'},{it:'contento/a', et:'rahul/rõõmus'},{it:'triste', et:'kurb'},
+    {it:'simpatico/a', et:'sümpaatne/meeldiv'},{it:'antipatico/a', et:'ebasümpaatne'},
+    {it:'gentile', et:'lahke'},{it:'intelligente', et:'tark'},{it:'pigro/a', et:'laisk'},
+  ],
+  'tegusoned-list': [
+    {it:'essere', et:'olema'},{it:'avere', et:'omama/olema'},{it:'fare', et:'tegema'},
+    {it:'dire', et:'ütlema'},{it:'andare', et:'minema'},{it:'venire', et:'tulema'},
+    {it:'sapere', et:'teadma/oskama'},{it:'potere', et:'saama/võima'},{it:'volere', et:'tahtma'},
+    {it:'dovere', et:'pidama'},{it:'stare', et:'olema (seisundis)'},{it:'dare', et:'andma'},
+    {it:'parlare', et:'rääkima'},{it:'mangiare', et:'sööma'},{it:'bere', et:'jooma'},
+    {it:'dormire', et:'magama'},{it:'lavorare', et:'töötama'},{it:'studiare', et:'õppima'},
+    {it:'abitare', et:'elama'},{it:'amare', et:'armastama'},{it:'prendere', et:'võtma'},
+    {it:'vedere', et:'nägema'},{it:'leggere', et:'lugema'},{it:'scrivere', et:'kirjutama'},
+    {it:'ascoltare', et:'kuulama'},{it:'capire', et:'mõistma'},{it:'aiutare', et:'aitama'},
+    {it:'comprare', et:'ostma'},{it:'vendere', et:'müüma'},{it:'aprire', et:'avama'},
+    {it:'chiudere', et:'sulgema'},{it:'cercare', et:'otsima'},{it:'trovare', et:'leidma'},
+    {it:'chiamare', et:'kutsuma/helistama'},{it:'aspettare', et:'ootama'},{it:'partire', et:'lahkuma'},
+    {it:'arrivare', et:'saabuma'},{it:'uscire', et:'väljuma'},{it:'entrare', et:'sisenema'},
+    {it:'tornare', et:'tagasi tulema'},{it:'finire', et:'lõpetama'},{it:'cominciare', et:'alustama'},
+  ]
+};
+
+function showVocab(key, tabEl) {
+  document.querySelectorAll('#vocabTabs .verb-tab').forEach(t => t.classList.remove('active'));
+  if (tabEl) tabEl.classList.add('active');
+  const data = vocabData[key];
+  if (!data) return;
+  let html = '<div class="vocab-grid">';
+  for (const w of data) {
+    html += `<div class="vocab-card" onclick="toggleVocabCard(this)">
+      <div class="it-word">${w.it}</div>
+      <div class="et-word hidden">${w.et}</div>
+    </div>`;
+  }
+  html += '</div>';
+  const el = document.getElementById('vocabDisplay');
+  if (el) el.innerHTML = html;
+}
+function toggleVocabCard(card) {
+  const et = card.querySelector('.et-word');
+  et.classList.toggle('hidden');
+}
+// init vocab – kutsutakse ka siis kui jaotis muutub nähtavaks
+function initVocab() {
+  const firstTab = document.querySelector('#vocabTabs .verb-tab');
+  showVocab('tervitused', firstTab);
+}
+initVocab();
+
+// ============ EXERCISES ============
+const ex1Data = [
+  {word:'libro',    answer:"un",   hint:'raamat'},
+  {word:'amica',    answer:"un'",  hint:'sõbranna'},
+  {word:'studente', answer:'uno',  hint:'üliõpilane'},
+  {word:'zaino',    answer:'uno',  hint:'seljakott'},
+  {word:'casa',     answer:'una',  hint:'maja'},
+  {word:'uomo',     answer:'un',   hint:'mees'},
+  {word:'pizza',    answer:'una',  hint:'pitsa'},
+  {word:'gnomo',    answer:'uno',  hint:'päkapikk'},
+  {word:'errore',   answer:'un',   hint:'viga'},
+  {word:'scuola',   answer:'una',  hint:'kool'},
+  {word:'psicologo',answer:'uno',  hint:'psühholoog'},
+  {word:'idea',     answer:"un'",  hint:'idee'},
+];
+function buildEx1() {
+  let html = '';
+  ex1Data.forEach((item, i) => {
+    html += `<div class="exercise-item" style="flex-wrap:nowrap;align-items:center;">
+      <span style="color:var(--mid);font-size:0.92rem;font-style:italic;">
+        <select id="ex1_${i}" style="font-size:0.92rem;font-family:inherit;border:2px solid var(--border);border-radius:8px;padding:0.25rem 0.4rem;background:white;color:var(--accent);font-weight:700;cursor:pointer;margin-right:4px;">
+          <option value="">–</option>
+          <option value="un">un</option>
+          <option value="uno">uno</option>
+          <option value="una">una</option>
+          <option value="un'">un'</option>
+        </select>${item.word}
+        <small style="color:#bbb;margin-left:6px">${item.hint}</small>
+      </span>
+      <span class="feedback" id="ex1f_${i}"></span>
+    </div>`;
+  });
+  document.getElementById('ex1').innerHTML = html;
+  document.getElementById('ex1score').classList.remove('show');
+}
+function checkEx1() {
+  let ok = 0;
+  ex1Data.forEach((item, i) => {
+    const sel = document.getElementById('ex1_'+i);
+    const fb = document.getElementById('ex1f_'+i);
+    if (sel.value === item.answer) {
+      sel.style.borderColor = 'var(--green)'; sel.style.background = 'var(--green-light)';
+      fb.className = 'feedback ok'; fb.textContent = 'Oige!'; ok++;
+    } else if (sel.value === '') {
+      sel.style.borderColor = 'var(--border)';
+      fb.className = 'feedback err'; fb.textContent = 'Vastus: ' + item.answer;
+    } else {
+      sel.style.borderColor = 'var(--red)'; sel.style.background = 'var(--red-light)';
+      fb.className = 'feedback err'; fb.textContent = 'Vastus: ' + item.answer;
+    }
+  });
+  showScore('ex1score', ok, ex1Data.length);
+}
+function resetEx1() { buildEx1(); }
+
+const ex2Data = [
+  {sentence:'(Tu) ___ a Roma. (essere)', answer:'sei'},
+  {sentence:'(Io) ___ un caffè. (avere)', answer:'ho'},
+  {sentence:'(Noi) ___ italiano. (parlare)', answer:'parliamo'},
+  {sentence:'(Lei) ___ a scuola. (andare)', answer:'va'},
+  {sentence:'(Loro) ___ sport. (fare)', answer:'fanno'},
+  {sentence:'(Tu) ___ leggere? (potere)', answer:'puoi'},
+  {sentence:'(Io) ___ studiare. (dovere)', answer:'devo'},
+  {sentence:'(Voi) ___ la pizza. (mangiare)', answer:'mangiate'},
+  {sentence:'(Lui) ___ stanco. (essere)', answer:'è'},
+  {sentence:'(Io) ___ l\'italiano. (capire / isc)', answer:'capisco'},
+];
+
+function buildEx2() {
+  let html = '';
+  ex2Data.forEach((item, i) => {
+    const [before, after] = item.sentence.split('___');
+    html += `<div class="exercise-item" style="flex-wrap:nowrap;align-items:center;">
+      <span style="color:var(--mid);font-size:0.92rem;font-style:italic;">${before}<input type="text" id="ex2_${i}" placeholder="?" autocomplete="off" autocorrect="off" spellcheck="false" style="width:90px;margin:0 2px;vertical-align:baseline;">${after}</span>
+      <span class="feedback" id="ex2f_${i}"></span>
+    </div>`;
+  });
+  document.getElementById('ex2').innerHTML = html;
+}
+function checkEx2() {
+  let ok = 0;
+  ex2Data.forEach((item, i) => {
+    const v = document.getElementById('ex2_'+i).value.trim().toLowerCase();
+    const inp = document.getElementById('ex2_'+i);
+    const fb = document.getElementById('ex2f_'+i);
+    if (v === item.answer) {
+      inp.className = 'correct'; fb.className = 'feedback ok'; fb.textContent = 'Oige!'; ok++;
+    } else {
+      inp.className = 'wrong'; fb.className = 'feedback err'; fb.textContent = 'Vastus: ' + item.answer;
+    }
+  });
+  showScore('ex2score', ok, ex2Data.length);
+}
+function resetEx2() { buildEx2(); document.getElementById('ex2score').classList.remove('show'); }
+
+// Multiple choice
+const mcQuestions = [
+  {q:'Kuidas öeldakse "tere hommikust"?', opts:['Buonasera','Buongiorno','Buonanotte','Arrivederci'], ans:1},
+  {q:'Mis tähendab "Dove abiti?"', opts:['Kus sa töötad?','Mis sa teed?','Kus sa elad?','Mis su nimi on?'], ans:2},
+  {q:'Kuidas öeldakse "mul on nälg" itaalia keeles?', opts:['Ho sete','Ho fame','Ho paura','Ho freddo'], ans:1},
+  {q:'Mis on "la sorella"?', opts:['vend','ema','tütar','õde'], ans:3},
+  {q:'Kuidas öeldakse "Ma ei saa aru"?', opts:['Non parlo','Non capisco','Non so','Non vedo'], ans:1},
+  {q:'Vali oige tõlge: "Vorrei un caffè"', opts:['Tahan kohvi','Mul on kohvi','Kus on kohvik?','Kas saab kohvi?'], ans:0},
+  {q:'Mis on "il nonno"?', opts:['onu','vanaisa','isa','vend'], ans:1},
+  {q:'Kuidas öeldakse "homme"?', opts:['ieri','oggi','domani','adesso'], ans:2},
+  {q:'Mis tähendab "Ho vent\'anni"?', opts:['Ma olen kakskümmend tundi õppinud','Mul on kakskümmend aastat','Ma elan kakskümmend aastat','Mul on kakskümmend eurot'], ans:1},
+  {q:'Vali oige vorm: "Noi ___ a casa." (essere)', opts:['siamo','sono','siete','sei'], ans:0},
+  {q:'Mis tähendab "Piacere"?', opts:['Palun','Aitäh','Meeldiv tutvuda','Vabandage'], ans:2},
+  {q:'Mis on "il marito"?', opts:['abikaasa (N)','vanaisa','abikaasa (M)','isa'], ans:2},
+  {q:'Kuidas öeldakse "Ma lähen kooli"?', opts:['Vado a scuola','Vengo a scuola','Sono a scuola','Sto a scuola'], ans:0},
+  {q:'Mis tähendab "spesso"?', opts:['mõnikord','alati','tihti','kunagi mitte'], ans:2},
+  {q:'Mis on "lo zaino"?', opts:['sall','mantel','kott/seljakott','raamat'], ans:2},
+];
+let mcIndex = 0, mcCorrect = 0, mcAnswered = 0;
+function loadMC() {
+  const q = mcQuestions[mcIndex % mcQuestions.length];
+  document.getElementById('ex3q').textContent = q.q;
+  document.getElementById('ex3fb').textContent = '';
+  const optsEl = document.getElementById('ex3opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'mc-btn';
+    btn.textContent = opt;
+    btn.onclick = () => checkMC(i, q.ans, optsEl);
+    optsEl.appendChild(btn);
+  });
+}
+function checkMC(chosen, correct, optsEl) {
+  mcAnswered++;
+  const btns = optsEl.querySelectorAll('.mc-btn');
+  btns.forEach(b => b.disabled = true);
+  if (chosen === correct) {
+    btns[chosen].classList.add('mc-correct');
+    document.getElementById('ex3fb').innerHTML = '<span style="color:var(--green);font-weight:700">Oige!</span>';
+    mcCorrect++;
+  } else {
+    btns[chosen].classList.add('mc-wrong');
+    btns[correct].classList.add('mc-correct');
+    document.getElementById('ex3fb').innerHTML = '<span style="color:var(--red)">Vale. Oige vastus markitud rohelisega.</span>';
+  }
+  document.getElementById('mcScore').textContent = mcCorrect;
+  document.getElementById('mcTotal').textContent = mcAnswered;
+}
+function nextMC() { mcIndex++; loadMC(); }
+
+const ex4Data = [
+  {before:'Io', after:'la pizza.', hint:'mangiare', answer:'ho mangiato', alts:[]},
+  {before:'Tu', after:'a Roma.', hint:'andare', answer:'sei andato', alts:['sei andata','sei andati','sei andate']},
+  {before:'Lei', after:'il libro.', hint:'leggere', answer:'ha letto', alts:[]},
+  {before:'Noi', after:'sport.', hint:'fare', answer:'abbiamo fatto', alts:[]},
+  {before:'Loro', after:'tardi.', hint:'arrivare', answer:'sono arrivati', alts:['sono arrivate']},
+  {before:'Io', after:'un film.', hint:'vedere', answer:'ho visto', alts:[]},
+];
+
+function buildEx4() {
+  let html = '';
+  ex4Data.forEach((item, i) => {
+    html += `<div class="exercise-item" style="flex-wrap:nowrap;align-items:center;">
+      <span style="color:var(--mid);font-size:0.92rem;font-style:italic;">${item.before} <input type="text" id="ex4_${i}" placeholder="${item.hint}…" autocomplete="off" autocorrect="off" spellcheck="false" style="width:160px;margin:0 2px;vertical-align:baseline;"> ${item.after}</span>
+      <span class="feedback" id="ex4f_${i}"></span>
+    </div>`;
+  });
+  document.getElementById('ex4').innerHTML = html;
+}
+function checkEx4() {
+  let ok = 0;
+  ex4Data.forEach((item, i) => {
+    const v = document.getElementById('ex4_'+i).value.trim().toLowerCase();
+    const inp = document.getElementById('ex4_'+i);
+    const fb = document.getElementById('ex4f_'+i);
+    const accepted = [item.answer, ...item.alts];
+    if (accepted.includes(v)) {
+      inp.className = 'correct'; fb.className = 'feedback ok'; fb.textContent = 'Oige!'; ok++;
+    } else {
+      inp.className = 'wrong'; fb.className = 'feedback err'; fb.textContent = 'Vastus: ' + item.answer;
+    }
+  });
+  showScore('ex4score', ok, ex4Data.length);
+}
+function resetEx4() { buildEx4(); document.getElementById('ex4score').classList.remove('show'); }
+
+function showScore(id, ok, total) {
+  const el = document.getElementById(id);
+  el.classList.add('show');
+  const pct = Math.round(ok/total*100);
+  el.className = 'score-box show ' + (pct >= 70 ? 'score-good' : 'score-bad');
+  el.textContent = `Tulemus: ${ok}/${total} (${pct}%)` + (pct >= 70 ? ' – Suurepärane!' : ' – Proovi uuesti!');
+}
+
+buildEx1(); buildEx2(); buildEx4(); loadMC();
+
+// ============ FLASHCARDS ============
+let currentDeck = [];
+let cardIndex = 0;
+let cardKnownCount = 0;
+let cardUnknownCount = 0;
+let cardFlipped = false;
+
+function loadDeck() {
+  const key = document.getElementById('deckSelect').value;
+  currentDeck = [...vocabData[key]].sort(() => Math.random()-0.5);
+  cardIndex = 0; cardKnownCount = 0; cardUnknownCount = 0;
+  updateCard();
+  updateCardStats();
+}
+
+function updateCard() {
+  if (currentDeck.length === 0) return;
+  if (cardIndex >= currentDeck.length) {
+    document.getElementById('cardWord').textContent = 'Labi!';
+    document.getElementById('cardHint').textContent = `Teadsid: ${cardKnownCount}, Ei teadnud: ${cardUnknownCount}`;
+    document.getElementById('cardTransl').textContent = '';
+    document.getElementById('cardExtra').textContent = '';
+    document.getElementById('cardCounter').textContent = currentDeck.length + ' / ' + currentDeck.length;
+    return;
+  }
+  const card = currentDeck[cardIndex];
+  document.getElementById('cardWord').textContent = card.it;
+  document.getElementById('cardHint').textContent = 'kliki, et tõlge näha';
+  document.getElementById('cardTransl').textContent = card.et;
+  document.getElementById('cardExtra').textContent = '';
+  document.getElementById('cardCounter').textContent = (cardIndex+1) + ' / ' + currentDeck.length;
+  const fc = document.getElementById('flashcard');
+  fc.classList.remove('flipped');
+  cardFlipped = false;
+}
+
+function flipCard() {
+  const fc = document.getElementById('flashcard');
+  fc.classList.toggle('flipped');
+  cardFlipped = !cardFlipped;
+  if (cardFlipped) {
+    document.getElementById('cardHint').textContent = 'tõlge';
+  }
+}
+
+function cardResult(knew) {
+  if (knew) cardKnownCount++; else cardUnknownCount++;
+  cardIndex++;
+  updateCard();
+  updateCardStats();
+}
+
+function updateCardStats() {
+  document.getElementById('cardKnown').textContent = cardKnownCount;
+  document.getElementById('cardUnknown').textContent = cardUnknownCount;
+  document.getElementById('cardLeft').textContent = Math.max(0, currentDeck.length - cardIndex);
+}
+
+loadDeck();
+
+// ===== INIT SESSION COUNTER =====
+// (already handled above)
+</script>
+
+</body>
+</html>
